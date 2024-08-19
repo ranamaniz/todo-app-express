@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const MONGO_URI: string = process.env.MONGO_URI || "";
+const MONGO_URI: string = process.env.MONGO_URI!;
 
-console.log(MONGO_URI);
+console.log("MONGO_URI", MONGO_URI);
 
 const connectMongoDB = async () => {
   console.log("hello");
@@ -15,7 +15,7 @@ const connectMongoDB = async () => {
 
     console.log("Connected to DB");
   } catch (e) {
-    console.log("Sorry could not connec to the DB", e);
+    console.log("Sorry could not connect to the DB", e);
   }
 };
 

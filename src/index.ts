@@ -1,13 +1,15 @@
 import cors from "cors";
-import "dotenv/config";
+import  "dotenv/config";
 import express from "express";
-import connectMongoDB from "./connection.ts";
-import Todo from "./model/Todo.ts";
+import connectMongoDB from "./connection";
+import Todo from "./model/Todo";
+
 
 const app = express();
 app.use(cors());
 
 const port = process.env.PORT;
+console.log(port)
 
 await connectMongoDB();
 
