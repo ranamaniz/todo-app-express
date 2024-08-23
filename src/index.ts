@@ -1,15 +1,14 @@
 import cors from "cors";
-import  "dotenv/config";
+import "dotenv/config";
 import express from "express";
 import connectMongoDB from "./connection";
 import Todo from "./model/Todo";
-
 
 const app = express();
 app.use(cors());
 
 const port = process.env.PORT;
-console.log(port)
+console.log(port);
 
 await connectMongoDB();
 
@@ -81,6 +80,38 @@ app.post("/todos", async (req, res) => {
     //   error: e,
     // });
     res.send(e);
+  }
+});
+
+app.put("/todos/:id", async (req, res) => {
+  try {
+    const todoId = req.params.id;
+    console.log("todoId", todoId);
+
+    const updatedData = req.body;
+    console.log("updatedData", updatedData);
+
+    const response = await Todo.findByIdAndUpdate(todoId, updatedData, {
+      new: true,
+      runValidators: true,
+    });
+
+    console.log(response);
+
+    // const data = await response.json();
+    res.status(200).json({
+      success: true,
+      message: "Successfully updated the todo",
+      statusCode: "SUCCESS",
+      data: response,
+    });
+  } catch (e) {
+    res.status(500).json({
+      status: false,
+      message: "Sorry something went wrong",
+      error: e,
+      statusCode: "ERROR",
+    });
   }
 });
 
