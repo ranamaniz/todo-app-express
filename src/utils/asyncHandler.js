@@ -1,13 +1,12 @@
+import { ApiError } from "./apiError";
 
 const asyncHandler = (reqFn) => async (req, res, next) => {
   try {
     await reqFn(req, res, next);
   } catch (err) {
-    res.status(err?.code || 500).json({
-      success: false,
-      message: err?.message || "Sorry something went wrong",
-      error: err,
-    });
+    const error = new ApiError(err.code || 500, err.message);
+
+    res.json(error);
   }
 };
 
