@@ -5,9 +5,8 @@
   "main": "build/index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon",
-    "build": "tsc",
-    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node build/index.js",
+    "dev": "nodemon src/index.js localhost 8080",
+    "start": "nodemon build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

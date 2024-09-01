@@ -1,6 +1,6 @@
 import "dotenv/config";
-import connectMongoDB from "./db";
-import { app } from "./app";
+import connectMongoDB from "./db/index.js";
+import { app } from "./app.js";
 
 const PORT = process.env.PORT || 8080;
 try {

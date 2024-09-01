@@ -1,1 +1,0 @@
-const DB_NAME="todo-app"

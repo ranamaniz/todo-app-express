@@ -1,9 +1,9 @@
-import express, { NextFunction, Request, Response } from "express";
-import cors from "cors";
 import cookieParser from "cookie-parser";
-import Todo from "./model/Todo";
-import { asyncHandler } from "./utils/asyncHandler";
-import { RouteHandlerParams } from "./types";
+import cors from "cors";
+import express from "express";
+import Todo from "./model/Todo.js";
+import { asyncHandler } from "./utils/asyncHandler.js";
+
 
 const app = express();
 app.use(cors());
@@ -12,6 +12,8 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
+
+console.log("hello")
 
 app.get("/", (req, res) => {
   res.json({ a: "Hello there" });
