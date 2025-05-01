@@ -4,7 +4,7 @@ import express from "express";
 import Todo from "./model/Todo.js";
 import { asyncHandler } from "./utils/asyncHandler.js";
 import User from "./model/User.js";
-import { hash } from "bcrypt";
+import { compare, hash } from "bcrypt";
 
 const app = express();
 app.use(cors());
@@ -150,22 +150,37 @@ app.post("/register", async (req, res) => {
       password: hashedPassword,
     };
 
-    // TODO:signup authentication
+    const prevUser = await User.find({ email });
+
+    console.log("prevUser", prevUser);
+
+    if (prevUser.length !== 0) {
+      const hasUserError = new Error("There is already user with this email");
+
+      throw hasUserError;
+    }
+
     const user = new User(userData);
+
     const response = await user.save();
 
     console.log("response", response);
+
+    // return token for the user ?
+    // jwt token?
+
     res.status(200).json({
       success: true,
       message: "Successfully registered the user",
       data: response,
     });
   } catch (e) {
+    console.log(e?.message);
     console.log("error:", e);
     res.status(500).json({
       success: false,
       error: e,
-      message: "Sorry could not register the user",
+      message: e?.message || "Sorry could not register the user",
       statusCode: "ERROR",
     });
   }
@@ -182,22 +197,21 @@ app.post("/authenticate", async (req, res) => {
     //  check if they are empty or valid as email, name,
     // if username is already there, check and validate
 
-    const hashedPassword = await hash(password, 10);
-
-    const userData = {
-      email,
-      password: hashedPassword,
-    };
+   
 
     // TODO:get user by email and check the hashed password
 
-    const user = await User.find({ email });
+    const user = await User.findOne({ email });
 
     console.log(user);
+   
+    const isPasswordCorrect = await compare(password, user?.password);
 
-    const isPasswordCorrect = hashedPassword === user.password;
+    console.log("isPasswordCorrect", isPasswordCorrect);
 
-    console.log("response", response);
+    if (!isPasswordCorrect) {
+      throw new Error("Sorry, password did not match");
+    }
 
     res.status(200).json({
       success: true,
@@ -209,7 +223,9 @@ app.post("/authenticate", async (req, res) => {
     res.status(500).json({
       success: false,
       error: e,
-      message: "Sorry could not log in, since the password did not match",
+      message:
+        e?.message ||
+        "Sorry could not log in, since the password did not match",
       statusCode: "ERROR",
     });
   }
