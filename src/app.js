@@ -171,4 +171,48 @@ app.post("/register", async (req, res) => {
   }
 });
 
+app.post("/authenticate", async (req, res) => {
+  try {
+    const data = req.body;
+    console.log("data", data);
+
+    // hash the password
+
+    const { username, password, email } = data;
+    //  check if they are empty or valid as email, name,
+    // if username is already there, check and validate
+
+    const hashedPassword = await hash(password, 10);
+
+    const userData = {
+      email,
+      password: hashedPassword,
+    };
+
+    // TODO:get user by email and check the hashed password
+
+    const user = await User.find({ email });
+
+    console.log(user);
+
+    const isPasswordCorrect = hashedPassword === user.password;
+
+    console.log("response", response);
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully authenticated the user",
+      data: user,
+    });
+  } catch (e) {
+    console.log("error:", e);
+    res.status(500).json({
+      success: false,
+      error: e,
+      message: "Sorry could not log in, since the password did not match",
+      statusCode: "ERROR",
+    });
+  }
+});
+
 export { app };
