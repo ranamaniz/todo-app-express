@@ -4,6 +4,8 @@ import express from "express";
 import Todo from "./model/Todo.js";
 import { register, signin } from "./services/auth.js";
 import { asyncHandler } from "./utils/asyncHandler.js";
+import User from "./model/User.js";
+import { compare, hash } from "bcrypt";
 
 const app = express();
 app.use(cors());
@@ -132,6 +134,4 @@ app.delete(`/todos/:id`, async (req, res) => {
 app.post("/register", register);
 app.post("/authenticate", signin);
 
-
 export { app };
-
