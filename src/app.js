@@ -2,9 +2,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import Todo from "./model/Todo.js";
+import { register, signin } from "./services/auth.js";
 import { asyncHandler } from "./utils/asyncHandler.js";
-import User from "./model/User.js";
-import { hash } from "bcrypt";
 
 const app = express();
 app.use(cors());
@@ -128,47 +127,11 @@ app.delete(`/todos/:id`, async (req, res) => {
   }
 });
 
+// const create
 // authentication
-app.post("/register", async (req, res) => {
-  try {
-    const data = req.body;
-    console.log("data", data);
+app.post("/register", register);
+app.post("/authenticate", signin);
 
-    // hash the password
-
-    const { firstName, lastName, username, password, email } = data;
-    //  check if they are empty or valid as email, name,
-    // if username is already there, check and validate
-
-    const hashedPassword = await hash(password, 10);
-
-    const userData = {
-      firstName,
-      lastName,
-      username,
-      email,
-      password: hashedPassword,
-    };
-
-    // TODO:signup authentication
-    const user = new User(userData);
-    const response = await user.save();
-
-    console.log("response", response);
-    res.status(200).json({
-      success: true,
-      message: "Successfully registered the user",
-      data: response,
-    });
-  } catch (e) {
-    console.log("error:", e);
-    res.status(500).json({
-      success: false,
-      error: e,
-      message: "Sorry could not register the user",
-      statusCode: "ERROR",
-    });
-  }
-});
 
 export { app };
+

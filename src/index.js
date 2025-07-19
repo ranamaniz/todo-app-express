@@ -2,7 +2,7 @@ import "dotenv/config";
 import connectMongoDB from "./db/index.js";
 import { app } from "./app.js";
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 try {
   await connectMongoDB();
 
