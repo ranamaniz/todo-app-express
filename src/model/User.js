@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 // for now just email and password
-// TODO: add first name , lastname , and others later
+// TODO: add first name, lastname, and others later
 
 const userSchema = new Schema({
   firstName: { type: String, required: true },
