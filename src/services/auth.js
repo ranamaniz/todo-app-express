@@ -1,4 +1,4 @@
-import { compare, hash } from "bcrypt";
+import { compare, hash } from "bcryptjs";
 import { JWT_SECRET } from "../config/config.js";
 import User from "../model/User.js";
 import { ApiResponse } from "../utils/apiResponse.js";
